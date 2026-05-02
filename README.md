@@ -29,7 +29,7 @@ Add the package to your brain instance `package.json`:
 ```json
 {
   "dependencies": {
-    "@rizom/brain": "^0.2.0-alpha.47",
+    "@rizom/brain": "^0.2.0-alpha.48",
     "@rizom/brain-plugin-recipes": "^0.1.0"
   }
 }
@@ -102,4 +102,4 @@ The CI path uses the published `@rizom/brain` package:
 bun run smoke:published
 ```
 
-The smoke test creates a temporary plugin copy and a temporary brain instance, installs tarballs, and runs `brain start --startup-check` to verify the recipe plugin registered and reached ready. Until the published `@rizom/brain` package includes `--startup-check`, the published-package smoke script falls back to the older dummy-key timed start.
+The smoke test creates a temporary plugin copy and a temporary brain instance, installs tarballs, and runs `brain start --startup-check` to verify the recipe plugin registered and reached ready.

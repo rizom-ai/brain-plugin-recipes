@@ -5,12 +5,12 @@
     "": {
       "name": "@rizom/brain-plugin-recipes",
       "devDependencies": {
-        "@rizom/brain": "^0.2.0-alpha.47",
+        "@rizom/brain": "^0.2.0-alpha.48",
         "typescript": "^5.3.3",
         "zod": "^3.0.0",
       },
       "peerDependencies": {
-        "@rizom/brain": "^0.2.0-alpha.47",
+        "@rizom/brain": "^0.2.0-alpha.48",
         "zod": "^3.0.0",
       },
     },
@@ -118,7 +118,7 @@
 
     "@neon-rs/load": ["@neon-rs/load@0.0.4", "", {}, "sha512-kTPhdZyTQxB+2wpiRcFWrDcejc4JI6tkPuS7UZCG4l6Zvc5kU/gGQ/ozvHTh1XR5tS+UlfAfGuPajjzQjCiHCw=="],
 
-    "@rizom/brain": ["@rizom/brain@0.2.0-alpha.47", "", { "dependencies": { "@clack/prompts": "^0.11.0", "@modelcontextprotocol/sdk": "^1.24.0", "@tailwindcss/postcss": "^4.1.13", "@tailwindcss/typography": "^0.5.19", "postcss": "^8.5.6", "preact": "^10.27.2", "preact-render-to-string": "^6.3.1", "tailwindcss": "^4.1.11" }, "optionalDependencies": { "@libsql/client": "^0.15.7", "@tailwindcss/oxide": "^4.1.4", "better-sqlite3": "^11.8.1", "lightningcss": "^1.29.2", "react-devtools-core": "^6.1.1", "sharp": "^0.34.5" }, "bin": { "brain": "dist/brain.js" } }, "sha512-Btk9wmLn6gU/4CJJXjKzkg5w/Hi9Wh0Y//IB3Bhkyjqj6CpQ+dYeTDQuRf4LygcvqcRbIIHq0FdTF1rj9Abv+g=="],
+    "@rizom/brain": ["@rizom/brain@0.2.0-alpha.48", "", { "dependencies": { "@clack/prompts": "^0.11.0", "@modelcontextprotocol/sdk": "^1.24.0", "@tailwindcss/postcss": "^4.1.13", "@tailwindcss/typography": "^0.5.19", "postcss": "^8.5.6", "preact": "^10.27.2", "preact-render-to-string": "^6.3.1", "tailwindcss": "^4.1.11" }, "optionalDependencies": { "@libsql/client": "^0.15.7", "@tailwindcss/oxide": "^4.1.4", "better-sqlite3": "^11.8.1", "lightningcss": "^1.29.2", "react-devtools-core": "^6.1.1", "sharp": "^0.34.5" }, "bin": { "brain": "dist/brain.js" } }, "sha512-S2dGqAz0yXFkEzhlBh7hSZpQXE5iryYBjdVUCGRjHzf4pslgmPRZOdTZVjkHq8VnsU2DS05t3x2ClXfIHxK4gw=="],
 
     "@tailwindcss/node": ["@tailwindcss/node@4.2.4", "", { "dependencies": { "@jridgewell/remapping": "^2.3.5", "enhanced-resolve": "^5.19.0", "jiti": "^2.6.1", "lightningcss": "1.32.0", "magic-string": "^0.30.21", "source-map-js": "^1.2.1", "tailwindcss": "4.2.4" } }, "sha512-Ai7+yQPxz3ddrDQzFfBKdHEVBg0w3Zl83jnjuwxnZOsnH9pGn93QHQtpU0p/8rYWxvbFZHneni6p1BSLK4DkGA=="],
 

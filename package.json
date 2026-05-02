@@ -29,11 +29,11 @@
     "smoke:published": "./scripts/smoke-published.sh"
   },
   "peerDependencies": {
-    "@rizom/brain": "^0.2.0-alpha.47",
+    "@rizom/brain": "^0.2.0-alpha.48",
     "zod": "^3.0.0"
   },
   "devDependencies": {
-    "@rizom/brain": "^0.2.0-alpha.47",
+    "@rizom/brain": "^0.2.0-alpha.48",
     "typescript": "^5.3.3",
     "zod": "^3.0.0"
   },
