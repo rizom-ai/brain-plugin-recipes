@@ -6,7 +6,6 @@ import {
 import {
   generateFrontmatter,
   generateMarkdownWithFrontmatter,
-  parseMarkdownWithFrontmatter,
   type BaseEntity,
   type EntityAdapter,
   type EntityTypeConfig,
@@ -66,6 +65,52 @@ function parseNumbered(section: string): string[] {
     .filter((line) => line.length > 0);
 }
 
+function parseFrontmatterValue(value: string): unknown {
+  const trimmed = value.trim();
+  if (/^-?\d+$/.test(trimmed)) {
+    return Number(trimmed);
+  }
+  if (
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+  ) {
+    return trimmed.slice(1, -1);
+  }
+  return trimmed;
+}
+
+function parseMarkdown(markdown: string): {
+  content: string;
+  metadata: Record<string, unknown>;
+} {
+  if (!markdown.startsWith("---\n")) {
+    return { content: markdown.trim(), metadata: {} };
+  }
+
+  const closeIndex = markdown.indexOf("\n---", 4);
+  if (closeIndex === -1) {
+    return { content: markdown.trim(), metadata: {} };
+  }
+
+  const frontmatter = markdown.slice(4, closeIndex);
+  const content = markdown.slice(closeIndex + 4).trim();
+  const metadata: Record<string, unknown> = {};
+
+  for (const line of frontmatter.split("\n")) {
+    const separator = line.indexOf(":");
+    if (separator === -1) {
+      continue;
+    }
+    const key = line.slice(0, separator).trim();
+    const value = line.slice(separator + 1);
+    if (key) {
+      metadata[key] = parseFrontmatterValue(value);
+    }
+  }
+
+  return { content, metadata };
+}
+
 function extractSection(markdown: string, heading: string): string {
   const escapedHeading = heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const match = markdown.match(
@@ -105,7 +150,7 @@ export class RecipeAdapter implements EntityAdapter<RecipeEntity> {
   }
 
   fromMarkdown(markdown: string, id = "recipe"): RecipeEntity {
-    const parsed = parseMarkdownWithFrontmatter(markdown);
+    const parsed = parseMarkdown(markdown);
     const metadata = recipeMetadataSchema.parse(parsed.metadata);
     const ingredients = parseBullets(
       extractSection(parsed.content, "Ingredients"),
@@ -134,7 +179,7 @@ export class RecipeAdapter implements EntityAdapter<RecipeEntity> {
     markdown: string,
     schema: z.ZodSchema<TFrontmatter>,
   ): TFrontmatter {
-    return schema.parse(parseMarkdownWithFrontmatter(markdown).metadata);
+    return schema.parse(parseMarkdown(markdown).metadata);
   }
 
   generateFrontMatter(entity: RecipeEntity): string {

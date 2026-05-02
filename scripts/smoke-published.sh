@@ -67,18 +67,34 @@ printf 'Installing temporary brain instance in %s...\n' "$instance_dir"
   bun install
 )
 
-printf 'Starting temporary brain instance until recipe plugin is ready...\n'
+printf 'Running temporary brain instance startup check...\n'
 set +e
 (
   cd "$instance_dir"
-  AI_API_KEY=dummy timeout 20s bun node_modules/.bin/brain start > "$log_file" 2>&1
+  bun node_modules/.bin/brain start --startup-check > "$log_file" 2>&1
 )
 status=$?
 set -e
 
-if [[ "$status" != "0" && "$status" != "124" ]]; then
-  cat "$log_file" >&2
-  exit "$status"
+if [[ "$status" != "0" ]]; then
+  if ! grep -q "AI_API_KEY" "$log_file"; then
+    cat "$log_file" >&2
+    exit "$status"
+  fi
+
+  printf 'Installed @rizom/brain does not support startup checks yet; falling back to legacy timed start...\n'
+  set +e
+  (
+    cd "$instance_dir"
+    AI_API_KEY=dummy timeout 20s bun node_modules/.bin/brain start > "$log_file" 2>&1
+  )
+  status=$?
+  set -e
+
+  if [[ "$status" != "0" && "$status" != "124" ]]; then
+    cat "$log_file" >&2
+    exit "$status"
+  fi
 fi
 
 if ! grep -q "Recipe entity plugin registered" "$log_file"; then
