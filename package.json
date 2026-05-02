@@ -1,0 +1,56 @@
+{
+  "name": "@rizom/brain-plugin-recipes",
+  "version": "0.1.0",
+  "description": "External entity plugin example for @rizom/brain.",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rizom-ai/brain-plugin-recipes.git"
+  },
+  "homepage": "https://github.com/rizom-ai/brain-plugin-recipes#readme",
+  "bugs": {
+    "url": "https://github.com/rizom-ai/brain-plugin-recipes/issues"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "prepack": "bun run build",
+    "smoke:published": "./scripts/smoke-published.sh"
+  },
+  "peerDependencies": {
+    "@rizom/brain": "^0.2.0-alpha.47",
+    "zod": "^3.0.0"
+  },
+  "devDependencies": {
+    "@rizom/brain": "^0.2.0-alpha.47",
+    "typescript": "^5.3.3",
+    "zod": "^3.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "Apache-2.0",
+  "author": "Rizom AI",
+  "engines": {
+    "bun": ">=1.3.3"
+  },
+  "keywords": [
+    "rizom",
+    "brain",
+    "plugin",
+    "entity-plugin",
+    "external-plugin",
+    "recipes"
+  ]
+}
