@@ -6,11 +6,10 @@ External entity plugin example for [`@rizom/brain`](https://github.com/rizom-ai/
 
 This package demonstrates the durable content path for external plugin authors:
 
-- imports only public `@rizom/brain/*` APIs plus `zod`
-- defines a `recipe` entity schema
-- implements a markdown/frontmatter adapter
-- loads from `brain.yaml plugins:`
-- receives `onRegister` and `onReady` lifecycle calls
+- imports only public `@rizom/brain/*` APIs
+- declares a `recipe` entity type with `defineEntity` and installs it with `defineEntityPackage`
+- keeps a recipe as markdown: typed frontmatter plus a structured body
+- tests itself on `@rizom/brain/testing`
 
 The domain is intentionally neutral and non-core: recipes are useful for showing structured markdown without implying a first-party knowledge-work entity.
 
@@ -20,32 +19,26 @@ The domain is intentionally neutral and non-core: recipes are useful for showing
 bun add @rizom/brain-plugin-recipes
 ```
 
-The plugin declares `@rizom/brain` as a peer dependency. The brain instance owns the actual `@rizom/brain` version.
+The plugin declares `@rizom/brain` as a peer dependency. The brain owns the actual `@rizom/brain` version.
 
-## Configure
+## Compose it into a brain
 
-Add the package to your brain instance `package.json`:
+A brain is a definition package that composes its plugins with `use()`:
 
-```json
-{
-  "dependencies": {
-    "@rizom/brain": "^0.2.0-alpha.48",
-    "@rizom/brain-plugin-recipes": "^0.1.0"
-  }
-}
+```ts
+import recipes from "@rizom/brain-plugin-recipes";
+import { defineBrain, use } from "@rizom/brain";
+
+export default defineBrain({
+  name: "my-brain",
+  plugins: [use(recipes)],
+});
 ```
 
-Declare the plugin in `brain.yaml`:
+The brain's `brain.yaml` names that definition package:
 
 ```yaml
-brain: rover
-preset: core
-
-plugins:
-  recipes:
-    package: "@rizom/brain-plugin-recipes"
-    config:
-      embeddable: true
+brain: "@my-org/my-brain"
 ```
 
 Then run:
@@ -55,22 +48,11 @@ bun install
 brain start
 ```
 
-For CI/smoke checks that only need to prove the plugin loads and reaches `onReady`, use:
-
-```bash
-brain start --startup-check
-```
-
-You should see lifecycle logs similar to:
-
-```txt
-[recipes] Recipe entity plugin registered
-[recipes] Recipe entity plugin ready
-```
+The brain installs the `recipe` type under the installed package's name, `@rizom/brain-plugin-recipes:recipe`. The type takes no config; recipes are embedded for search by meaning.
 
 ## Markdown shape
 
-Recipe entities serialize as frontmatter plus two body sections:
+A recipe's frontmatter is its metadata, and its body has two sections:
 
 ```md
 ---
@@ -92,14 +74,25 @@ cookTimeMinutes: 15
 2. Cook on a hot pan.
 ```
 
-No tags are used.
+`title` is required; `servings`, `prepTimeMinutes` and `cookTimeMinutes` are optional. No tags are used.
+
+`parseRecipe(recipe.content)` reads the ingredients and steps from a stored recipe's body, and `recipeBody({ ingredients, steps })` writes a body in this shape. `Recipe` is the stored record's type.
+
+## Develop
+
+```bash
+bun install
+bun run check
+```
+
+`check` typechecks the source and tests and runs the tests, which install the package in a test brain from `@rizom/brain/testing`.
 
 ## Smoke test
 
-The CI path uses the published `@rizom/brain` package:
+The CI path uses the published `@rizom/brain` version pinned in `devDependencies` (override with `BRAIN_VERSION`):
 
 ```bash
 bun run smoke:published
 ```
 
-The smoke test creates a temporary plugin copy and a temporary brain instance, installs tarballs, and runs `brain start --startup-check` to verify the recipe plugin registered and reached ready.
+The smoke test packs a copy of the plugin, composes it into a temporary brain definition with `use()`, installs both into a temporary brain instance, and runs `brain start --startup-check` at debug log level. It passes when the brain reports that it initialized `@rizom/brain-plugin-recipes:recipe` and registered the `recipe` entity type.
