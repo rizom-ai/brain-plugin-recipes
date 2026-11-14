@@ -31,10 +31,10 @@
     "smoke:published": "./scripts/smoke-published.sh"
   },
   "peerDependencies": {
-    "@rizom/brain": ">=0.2.0-alpha.703 <0.3.0"
+    "@rizom/brain": ">=0.2.0-alpha.711 <0.3.0"
   },
   "devDependencies": {
-    "@rizom/brain": "0.2.0-alpha.703",
+    "@rizom/brain": "0.2.0-alpha.711",
     "@types/bun": "^1.4.0",
     "typescript": "^7.0.2"
   },
