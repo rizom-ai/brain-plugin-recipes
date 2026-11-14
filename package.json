@@ -24,18 +24,19 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc -p tsconfig.test.json",
+    "test": "bun test",
+    "check": "bun run typecheck && bun test",
     "prepack": "bun run build",
     "smoke:published": "./scripts/smoke-published.sh"
   },
   "peerDependencies": {
-    "@rizom/brain": "^0.2.0-alpha.48",
-    "zod": "^3.0.0"
+    "@rizom/brain": ">=0.2.0-alpha.711 <0.3.0"
   },
   "devDependencies": {
-    "@rizom/brain": "^0.2.0-alpha.48",
-    "typescript": "^5.3.3",
-    "zod": "^3.0.0"
+    "@rizom/brain": "0.2.0-alpha.711",
+    "@types/bun": "^1.4.0",
+    "typescript": "^7.0.2"
   },
   "publishConfig": {
     "access": "public"
